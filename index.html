@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>观测台 · 地球 Observatory</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div class="ui">
+  <div class="frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <!-- ── masthead ─────────────────────────────────────────── -->
+  <header class="mast">
+    <div class="brand">
+      <h1>OBSERVATORY</h1>
+      <p class="brand-mid">EARTH · 地球 · 近地轨道</p>
+    </div>
+    <nav class="mast-nav">
+      <button class="tb ui-hit" id="btn-bgm" aria-pressed="false" title="开关风声 BGM（B）">
+        <span id="bgm-label">BGM · 风声</span>
+      </button>
+      <i class="vr" aria-hidden="true"></i>
+      <button class="tb ui-hit" id="btn-sensor" title="切换传感器视觉（1-4）">
+        <span id="sensor-label">传感 · 标准</span>
+      </button>
+      <i class="vr" aria-hidden="true"></i>
+      <button class="tb ui-hit" id="btn-scale" aria-pressed="false" title="切换自转档位">
+        <span id="scale-label">可视档 · 12s/天</span>
+      </button>
+      <i class="vr" aria-hidden="true"></i>
+      <button class="tb ui-hit" id="btn-home" title="回到近地轨道视角">RECENTER</button>
+    </nav>
+  </header>
+
+  <!-- ── 读数：左下一列 ──────────────────────────────────── -->
+  <section class="readout" id="readout">
+    <p class="ro-h">TELEMETRY / 遥测</p>
+    <dl class="ro-list">
+      <div class="ro-row"><dt>公转周期</dt><dd><b id="ro-year">60.0</b><em>s / 年</em></dd></div>
+      <div class="ro-row"><dt>自转档位</dt><dd><b id="ro-spin">12.0</b><em>s / 天</em></dd></div>
+      <div class="ro-row"><dt>相对日照</dt><dd><b id="ro-irr">1.00</b><em>× 地球</em></dd></div>
+      <div class="ro-row"><dt>视点高度</dt><dd><b id="ro-alt">—</b><em id="ro-alt-u">km</em></dd></div>
+      <div class="ro-row"><dt>公转进度</dt><dd><b id="ro-prog">0.0</b><em>%</em></dd></div>
+    </dl>
+    <p class="ro-note" id="ro-note">拖动月球轨道环 → 地球自转；滚轮 → 拉近拉远</p>
+  </section>
+
+  <!-- ── 行星选择器：拉远后出现 ──────────────────────────── -->
+  <section class="sys" id="sys" hidden>
+    <p class="sys-h">SOLAR SYSTEM / 太阳系</p>
+    <ul class="sys-list" id="sys-list"></ul>
+  </section>
+
+  <!-- ── 档案书架：上端，形似书脊 ─────────────────────────── -->
+  <section class="shelf" id="shelf" aria-label="档案书架">
+    <p class="shelf-h">ARCHIVE / 档案 <i id="shelf-count">12</i></p>
+    <ul class="shelf-row" id="shelf-row"></ul>
+  </section>
+
+  <!-- ── 档案浮层 ─────────────────────────────────────────── -->
+  <div class="archive" id="archive" hidden>
+    <div class="archive-in">
+      <div class="archive-top">
+        <p class="archive-h"><span id="ar-cn">—</span><i>/</i><em id="ar-en">—</em></p>
+        <button class="tb ui-hit" id="ar-close">CLOSE ✕</button>
+      </div>
+      <div class="archive-body" id="ar-body"></div>
+    </div>
+  </div>
+
+  <!-- ── 左侧形状图 ───────────────────────────────────────── -->
+  <section class="shape" id="shape" hidden>
+    <p class="shape-h" id="shape-h">—</p>
+    <svg id="shape-svg" preserveAspectRatio="xMidYMid meet"></svg>
+    <p class="shape-note" id="shape-note"></p>
+  </section>
+
+  <!-- ── 档案详情（右侧滑出）──────────────────────────────── -->
+  <aside class="dossier" id="dossier" hidden>
+    <p class="dossier-h" id="ds-h">—</p>
+    <div class="dossier-body" id="ds-body"></div>
+  </aside>
+
+  <!-- ── 底部 ────────────────────────────────────────────── -->
+  <footer class="hud">
+    <p class="hud-l"><span class="live" aria-hidden="true"></span>LINK ESTABLISHED</p>
+    <p class="hud-c" id="keys">
+      <span class="kg" data-k="drag"><kbd>拖环</kbd><em>转地球</em></span>
+      <span class="kg" data-k="wheel"><kbd>滚轮</kbd><em>远近</em></span>
+      <span class="kg" data-k="dragbg"><kbd>拖背景</kbd><em>转视角</em></span>
+      <span class="kg" data-k="t"><kbd>T</kbd><em>自转档</em></span>
+      <span class="kg" data-k="sensor"><kbd>1-4</kbd><em>传感器</em></span>
+      <span class="kg" data-k="b"><kbd>B</kbd><em>风声</em></span>
+      <span class="kg" data-k="r"><kbd>R</kbd><em>复位</em></span>
+    </p>
+    <p class="hud-r">MISSION TIME<i>/</i><span id="clock">00:00:00</span></p>
+  </footer>
+</div>
+
+<div class="loader" id="loader">
+  <div class="loader-box">
+    <div class="loader-mark">OBSER<b>VATORY</b></div>
+    <div class="loader-bar"><i id="lbar"></i></div>
+    <div class="loader-lbl"><span id="llbl">正在初始化</span><em id="lpct">0%</em></div>
+  </div>
+</div>
+
+<noscript><p style="color:#eee;padding:2rem">需要启用 JavaScript。</p></noscript>
+<script src="dist/app.js"></script>
+</body>
+</html>
