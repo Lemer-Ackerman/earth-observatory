@@ -99,6 +99,10 @@ body {
   font-style: normal; font-size: .5625rem; color: var(--ink-faint);
   margin-left: .25rem; letter-spacing: var(--t-label);
 }
+/* 自转够线（≥1s/圈）：点亮成琥珀色。这是"已起播/正在播"的信号，
+   免得玩家还在猜够不够快 */
+#ro-rate-row dd b { color: var(--ink-faint); transition: color .18s; }
+#ro-rate-row.hot dd b, #ro-rate-row.hot dt { color: var(--accent); }
 .ro-note {
   font: 400 .5625rem/1.6 var(--mono); letter-spacing: .04rem;
   color: var(--ink-faint); margin-top: .875rem; padding-top: .625rem;

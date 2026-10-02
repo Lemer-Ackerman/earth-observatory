@@ -19,6 +19,10 @@
       <p class="brand-mid">EARTH · 地球 · 近地轨道</p>
     </div>
     <nav class="mast-nav">
+      <button class="tb ui-hit" id="btn-spin-wave" aria-pressed="false" title="恒定自转并播放 BGM（1.6s/圈，播完一曲）">
+        <span id="spin-wave-label">恒转 · 1.6s/圈</span>
+      </button>
+      <i class="vr" aria-hidden="true"></i>
       <button class="tb ui-hit" id="btn-bgm" aria-pressed="false" title="开关风声 BGM（B）">
         <span id="bgm-label">BGM · 风声</span>
       </button>
@@ -41,11 +45,12 @@
     <dl class="ro-list">
       <div class="ro-row"><dt>公转周期</dt><dd><b id="ro-year">60.0</b><em>s / 年</em></dd></div>
       <div class="ro-row"><dt>自转档位</dt><dd><b id="ro-spin">12.0</b><em>s / 天</em></dd></div>
+      <div class="ro-row" id="ro-rate-row"><dt>当前自转</dt><dd><b id="ro-rate">—</b><em>s / 圈</em></dd></div>
       <div class="ro-row"><dt>相对日照</dt><dd><b id="ro-irr">1.00</b><em>× 地球</em></dd></div>
       <div class="ro-row"><dt>视点高度</dt><dd><b id="ro-alt">—</b><em id="ro-alt-u">km</em></dd></div>
       <div class="ro-row"><dt>公转进度</dt><dd><b id="ro-prog">0.0</b><em>%</em></dd></div>
     </dl>
-    <p class="ro-note" id="ro-note">拖动月球轨道环 → 地球自转；滚轮 → 拉近拉远</p>
+    <p class="ro-note" id="ro-note">聚焦地球后快拖（转成 1s/圈）→ 播 BGM；滚轮 → 拉近拉远</p>
   </section>
 
   <!-- ── 行星选择器：拉远后出现 ──────────────────────────── -->
