@@ -1,4 +1,4 @@
-# ~~这是个音乐播放器~~ 三维地球观测台
+# ~~音乐播放器~~ 三维地球观测台
 
 三维地球档案观测台 - WebGL 交互单页
 3D Earth Archive Observatory - WebGL Interactive Single Page
